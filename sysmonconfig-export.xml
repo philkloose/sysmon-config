@@ -5,10 +5,10 @@
   Master project:	https://github.com/SwiftOnSecurity/sysmon-config
   Master license:	Creative Commons Attribution 4.0 | You may privatize, fork, edit, teach, publish, or deploy for commercial use - with attribution in the text.
 
-  Fork version:	<N/A>
-  Fork author:	<N/A>
-  Fork project:	<N/A>
-  Fork license:	<N/A>
+  Fork version:	1 | Date: 2017-06-05
+  Fork author:	Phil Kluss
+  Fork project:	https://github.com/philkloose/sysmon-config
+  Fork license:	Creative Commons Attribution 4.0 | You may privatize, fork, edit, teach, publish, or deploy for commercial use - with attribution in the text.
  
   REQUIRED: Sysmon version 6.00 or higher (due to changes in registry syntax)
 	https://technet.microsoft.com/en-us/sysinternals/bb545021.aspx
@@ -55,6 +55,7 @@
 			<IntegrityLevel condition="is">AppContainer</IntegrityLevel> <!--Microsoft:Windows: Don't care about sandboxed processes-->
 			<ParentCommandLine condition="begin with">%%SystemRoot%%\system32\csrss.exe ObjectDirectory=\Windows</ParentCommandLine> <!--Microsoft:Windows:CommandShell: Triggered when programs use the command shell, but without attribution-->
 			<ParentImage condition="is">C:\Windows\system32\SearchIndexer.exe</ParentImage> <!--Microsoft:Windows:Search: Launches many uninteresting sub-processes-->
+			<CommandLine condition="is">C:\Windows\system32\wbem\wmiprvse.exe -secured -Embedding</CommandLine>
 			<!--SECTION: Microsoft:Windows:Defender-->
 			<Image condition="begin with">C:\Program Files\Windows Defender</Image> <!--Microsoft:Windows:Defender in Win10-->
 			<Image condition="is">C:\Windows\System32\MpSigStub.exe</Image> <!--Microsoft:Windows: Microsoft Malware Protection Signature Update Stub-->
@@ -100,6 +101,13 @@
 			<Image condition="is">C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe</Image> <!--Microsoft:Office: Background process-->
 			<ParentImage condition="end with">C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeClickToRun.exe</ParentImage> <!--Microsoft:Office: Background process-->
 			<ParentImage condition="is">C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe</ParentImage> <!--Microsoft:Office: Background process-->
+			<!--SECTION: Microsoft:OperationsManagerAgent-->
+			<ParentImage condition="is">C:\Program Files\System Center Operations Manager\Agent\MonitoringHost.exe</ParentImage> <!--Microsoft:OperationsManagerAgent -->
+			<!--SECTION: Microsoft:VSCode-->
+			<ParentImage condition="is">C:\Program Files (x86)\Microsoft VS Code\Code.exe</ParentImage> <!--Microsoft:VSCode: Too noisy-->
+			<!--SECTION: Git-->
+			<ParentImage condition="is">C:\Program Files\Git\cmd\git.exe</ParentImage> <!--Git: Too noisy-->
+			<ParentImage condition="is">C:\Program Files\Git\mingw64\bin\git.exe</ParentImage> <!--Git: Too noisy-->			
 			<!--SECTION: Google-->
 			<CommandLine condition="begin with">"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --type=</CommandLine> <!--Google:Chrome: massive command-line arguments-->
 			<CommandLine condition="begin with">"C:\Program Files\Google\Chrome\Application\chrome.exe" --type=</CommandLine> <!--Google:Chrome: massive command-line arguments-->
@@ -108,6 +116,8 @@
 			<!--SECTION: Firefox-->
 			<CommandLine condition="begin with">"C:\Program Files\Mozilla Firefox\plugin-container.exe" --channel</CommandLine> <!-- Mozilla:Firefox: Large command-line arguments | Credit @Darkbat91 -->
 			<CommandLine condition="begin with">"C:\Program Files (x86)\Mozilla Firefox\plugin-container.exe" --channel</CommandLine> <!-- Mozilla:Firefox: Large command-line arguments | Credit @Darkbat91 -->
+			<!--SECTION: Citrix-->
+			<CommandLine condition="end with">SelfService.exe" -periodicpoll</CommandLine> <!--Citrix: routine actions-->
 			<!--SECTION: Adobe-->
 			<CommandLine condition="contains">AcroRd32.exe" /CR </CommandLine> <!--Adobe:AcrobatReader: Uninsteresting sandbox subprocess-->
 			<CommandLine condition="contains">AcroRd32.exe" --channel=</CommandLine> <!--Adobe:AcrobatReader: Uninteresting sandbox subprocess-->
